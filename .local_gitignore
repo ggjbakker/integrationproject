@@ -1,0 +1,7 @@
+###################
+.local_gitignore
+*-converted-to.pdf
+main-blx.bib
+main.run.xml
+main.aux
+main.pdf
