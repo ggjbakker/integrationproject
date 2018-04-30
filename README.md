@@ -1,4 +1,4 @@
-# SC42040 Final Assignment
+# SC42035 Integration project
 
 Het is handig als de volgende regels aangehouden worden:
 
@@ -21,7 +21,7 @@ Het is handig als de volgende regels aangehouden worden:
 ## Figures rules
 
 * All figures have to be in .esp format.
-  - print(path,'-depsc') in MATLAB (I think)
+  - print(path,'-depsc') in MATLAB
 * All figures should be saved in a "figures" folder.
 * The figures should have names describing their content. Please follow the naming convention "prob2_1_descriptionofwhatthisis.eps".
 * Label all axis, make titles, add labels. 
