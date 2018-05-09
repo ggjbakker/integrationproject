@@ -12,7 +12,7 @@ k2 = Parameters(3); %friction coefficient second link
 g = Constants(1); %Gravity
 l1 = Constants(2); %length of first link in m
 l2 = Constants(3); %length of second link in m
-m1 = Constants(4); %mass of first link
+m1 = Constants(4); %mass of first linkm1 = Parameters(4); %mass of first link
 m2 = Constants(5); %mass of second link
 c1 = Constants(6); %center of mass of first link
 c2 = Constants(7); %center of mass of second link
