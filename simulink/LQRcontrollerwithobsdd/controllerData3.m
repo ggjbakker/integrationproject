@@ -1,14 +1,14 @@
-l%Variables
-h = 0.001;
-x0 = [0.47*pi 0.47*pi 0 0]; %initial condition
-sys = linearizedSSuu;
+%Variables
+h = 0.01;
+x0 = [-0.2*pi -0.3*pi 0 0]; %initial condition
+sys = linearizedSSdd;
 
 %Controllerparameters
-Q = [10 0 0 0 0;
-     0 200 0 0 0;
-     0 0 0 0 0;
-     0 0 0 0 0;
-     0 0 0 0 0]; 
+Q = [0 0 0 0 0;
+     0 10 0 0 0;
+     0 0 0.1 0 0;
+     0 0 0 0.1 0;
+     0 0 0 0 10]; 
 R = 0.005;
 opoles = [-40 -40.1 -15.2 -15.3];
 
