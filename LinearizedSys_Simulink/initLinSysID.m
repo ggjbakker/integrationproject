@@ -78,3 +78,19 @@ DTL = place(DTsys.a',DTsys.c',DTobsp);
 %check convergence 
 assert(max(eig(CTsys.a-CTL'*CTsys.c))<0);
 assert(max(abs(eig(DTsys.a-DTL'*DTsys.c)))<1);
+
+%%
+%Kalmann filter
+load cl_data.mat
+[Ad,Bd,Cd,Dd] = ssdata(DTsys);
+varR = var(y_meas);
+Qk = [0.05 0 0 0 0 0;
+      0 0.05 0 0 0 0;
+      0 0 1 0 0 0;
+      0 0 0 1 0 0;
+      0 0 0 0 1 0;
+      0 0 0 0 0 1];
+Rk = [varR(1) 0;0 varR(2)];
+[P,Lk,Kk] = dare(Ad',Cd',Qk,Rk);
+Kk = Kk';
+AKC = Ad-Kk*Cd;
