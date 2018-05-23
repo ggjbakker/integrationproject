@@ -1,4 +1,4 @@
-l%Variables
+%Variables
 h = 0.001;
 x0 = [0.47*pi 0.47*pi 0 0]; %initial condition
 sys = linearizedSSuu;
