@@ -2,6 +2,8 @@
 clear all; close all; clc; 
 warning off; 
 
+%% IMPORTANT, this is nice, but does only identify some model around the lowest point
+
 %% Load and process the data 
 load square05_f5.mat
 u = um;

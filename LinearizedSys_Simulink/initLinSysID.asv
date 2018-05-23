@@ -45,36 +45,21 @@ Ce =[1 0 0 0 0 0;
 CTsys = ss(Ae,Be,Ce,[]);
 DTsys = c2d(CTsys,h);
 
-CTQ = [ 1 0 0 0 0 0;
+Q = [ 1 0 0 0 0 0;
       0 1 0 0 0 0;
       0 0 1 0 0 0;
       0 0 0 1 0 0;
       0 0 0 0 1 0
       0 0 0 0 0 1];
-CTR = 1;
+R = 100;
 
-DTQ = [ 1 0 0 0 0 0;
-      0 0.01 0 0 0 0;
-      0 0 1 0 0 0;
-      0 0 0 0.01 0 0;
-      0 0 0 0 1 0
-      0 0 0 0 0 1];
-DTR = 10000000;
+[CTK,S,e] = lqr(CTsys.a,CTsys.b,Q,R,[]);  
+[DTK,S,e] = dlqr(DTsys.a,DTsys.b,Q,R,[]);
 
-[CTK,~,~] = lqr(CTsys.a,CTsys.b,CTQ,CTR,[]);  
-[DTK,~,~] = dlqr(DTsys.a,DTsys.b,DTQ,DTR,[]);
-
-%check stability, does not respond? 
-% assert(max(eig(CTsys.a-DTsys.b*CTK))<0,'hello');
-eig(CTsys.a-CTsys.b*CTK)
-% barely stable
-assert(max(abs(eig(DTsys.a-DTsys.b*DTK)))<1);
-eig(DTsys.a-DTsys.b*DTK)
-% Observer design 
-CTobsp = [-100.1;-100.2;-100.3;-100.4;-100.5;-100.6];
-DTobsp = [0.250;0.251;0.252;0.253;0.254;0.255];
-CTL = place(CTsys.a',CTsys.c',CTobsp);
-DTL = place(DTsys.a',DTsys.c',DTobsp);
-%check convergence 
-assert(max(eig(CTsys.a-CTL'*CTsys.c))<0);
-assert(max(abs(eig(DTsys.a-DTL'*DTsys.c)))<1);
+assert(max(eig(Ae-Be*CTK))<0);
+assert(eig(DTsys.a-DTsys.b*DTK)
+%%
+% Design an observer, might be (too) high gain 
+obsp = [-200.1;-200.2;-200.3;-200.4;-200.5;-200.6];
+CTL = place(Ae',Ce',obsp);
+eig(Ae-L'*Ce)

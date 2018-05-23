@@ -1,0 +1,20 @@
+%% Visualize reponse 
+
+t=0:h:15;
+
+% check the desired input vs the saturated input
+figu = figure;
+plot(t,u,'-k');
+hold on
+plot(t,u_sat,'-r');
+hold off
+legend('u','usat')
+
+% check observer performance
+figO = figure;
+subplot
+plot(t,y_meas,'-k');
+hold on
+plot(t,yh,'-b');
+hold off
+
