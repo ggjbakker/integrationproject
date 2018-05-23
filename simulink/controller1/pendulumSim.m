@@ -2,7 +2,7 @@ close all;
 %simparameters
 syms th1(t) th2(t) u
 tend = 10; %simulation end time
-y0 = [0.51*pi,0,0.5*pi,0]; %initial state
+y0 = [-0.51*pi,0,-0.5*pi,0]; %initial state
 uin = @(t)-um(floor(t/h)+1);
 
 %Parameters

@@ -1,9 +1,7 @@
 close all;
 %simparameters
 syms th1(t) th2(t) u
-tend = 10; %simulation end time
-y0 = [0.51*pi,0,0.5*pi,0]; %initial state
-uin = @(t)-um(floor(t/h)+1);
+x0 = [0.51*pi,0,0.5*pi,0]; %initial state
 
 %Parameters
 K = 1.8; %motor gain
@@ -43,28 +41,4 @@ odes = [ode1; ode2];
 
 %Solve equations using solver
 V = odeToVectorField(odes);
-M = matlabFunction(V,'Vars',{'t','Y','u'});
-M = @(t,Y)M(t,Y,uin(t));
-tspan = [0 tend];
-sol = ode45(M,tspan,y0);
-
-%%
-%plot the solution
-tVal = linspace(0,tend,tend*50);
-yVal = deval(sol,tVal);
-figure(1)
-plot(tVal,yVal)
-xlabel('t')
-ylabel('y(t)')
-
-%%
-%animation
-figure(2)
-hold on
-for ii = 1:tend*50
-    clf(2)
-    axis([-0.2 0.2 -0.2 0.2])
-    line([0 l1*cos(yVal(3,ii)) l1*cos(yVal(3,ii))+l2*cos(yVal(1,ii))],[0 l1*sin(yVal(3,ii)) l1*sin(yVal(3,ii))+l2*sin(yVal(1,ii))]);
-    pause(1/50);
-end
-hold off
+M = matlabFunction(V,'Vars',{'Y','u'},'File','M');

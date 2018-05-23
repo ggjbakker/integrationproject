@@ -1,28 +1,27 @@
-close all;
-%simparameters
-syms th1(t) th2(t) u
-tend = 10; %simulation end time
-y0 = [0.51*pi,0,0.5*pi,0]; %initial state
-uin = @(t)-um(floor(t/h)+1);
+function [th1] = penSimFun(u,y0,tend,h,Parameters,Constants)
+%penSimFun Simulates the pendulum and returns theta
+
+syms th1(t)
 
 %Parameters
-K = 1.8; %motor gain
-k1 = 0.35; %friction coefficient first link
-k2 = 0.0002; %friction coefficient second link
+k1 = Parameters(1); %friction coefficient second link
+K = Parameters(2);
 
 %Constants
-g = 9.81; %Gravity
-l1 = 0.1; %length of first link in m
-l2 = 0.1; %length of second link in m
-m1 = 0.18; %mass of first link
-m2 = 0.06; %mass of second link
-c1 = 0.06; %center of mass of first link
-c2 = 0.045; %center of mass of second link
-I1 = 0.037; %inertia of first link
-I2 = 0.00011; %inertia of second link
+g = Constants(1); %Gravity
+l1 = Constants(2); %length of first link in m
+l2 = Constants(3); %length of second link in m
+c2 = Constants(4); %center of mass of second link
+I1 = Constants(5); %inertia of first link
+I2 = Constants(6); %inertia of second link
+m1 = Constants(7); %mass of first link
+m2 = Constants(8); %mass of second link
+k2 = Constants(9); %friction coefficient second link
+c1 = Constants(10); %center of mass of second link
 
 %Equations of motion
 w1 = diff(th1);
+th2 = th1+pi;
 w2 = diff(th2);
 detg = (m2*c2^2+I2)*(m1*c1^2+m2*l1^2+I1)-(m2*l1*c2*cos(th1-th2))^2;
 gradV1 = 1/detg*((m2*c2^2+I2)*(g*cos(th1)*(m1*c1+m2*l1))-m2*l1*c2*cos(th1-th2)*(g*c2*m2*cos(th2)));
@@ -38,33 +37,16 @@ G12 = 1/detg*((m2*c2^2+I2)*(m2*l1*c2*sin(th1-th2)));
 G21 = -1/detg*((m1*c1^2+m2*l1^2+I1)*(m2*l1*c2*sin(th1-th2)));
 G22 = -1/detg*(0.5*m2^2*l1^2*c2^2*sin(2*(th1-th2)));
 ode1 = diff(th1, 2) == Fw11-G11*w1^2+Fw21-G12*w2^2+Fu1-gradV1;
-ode2 = diff(th2, 2) == Fw12-G21*w1^2+Fw22-G22*w2^2+Fu2-gradV2;
-odes = [ode1; ode2];
+odes = [ode1];
 
 %Solve equations using solver
 V = odeToVectorField(odes);
 M = matlabFunction(V,'Vars',{'t','Y','u'});
-M = @(t,Y)M(t,Y,uin(t));
 tspan = [0 tend];
 sol = ode45(M,tspan,y0);
 
-%%
-%plot the solution
-tVal = linspace(0,tend,tend*50);
+%evaluate the solution
+tVal = linspace(0,tend,tend*1/h);
 yVal = deval(sol,tVal);
-figure(1)
-plot(tVal,yVal)
-xlabel('t')
-ylabel('y(t)')
-
-%%
-%animation
-figure(2)
-hold on
-for ii = 1:tend*50
-    clf(2)
-    axis([-0.2 0.2 -0.2 0.2])
-    line([0 l1*cos(yVal(3,ii)) l1*cos(yVal(3,ii))+l2*cos(yVal(1,ii))],[0 l1*sin(yVal(3,ii)) l1*sin(yVal(3,ii))+l2*sin(yVal(1,ii))]);
-    pause(1/50);
+th1 = yVal(1,:);
 end
-hold off
